@@ -44,6 +44,23 @@ st.title("🇮🇳 BharatDoc Agent")
 st.header("AI-Powered Multilingual Document Intelligence System")
 
 st.write("Digitize, Understand and Query Documents using AI")
+# ------------------------------------
+# SOLUTION IMPACT
+# ------------------------------------
+
+st.subheader("🎯 Solution Impact")
+
+st.info("""
+✅ Reduces manual data entry
+
+✅ Converts unstructured documents into structured records
+
+✅ Enables faster document search and retrieval
+
+✅ Supports multilingual document digitization
+
+✅ Improves efficiency in government and institutional workflows
+""")
 
 st.divider()
 
@@ -222,6 +239,7 @@ using BharatDoc Agent.
 """
 
     st.success(summary)
+    
 
     # ------------------------------------
     # FINAL JSON OUTPUT

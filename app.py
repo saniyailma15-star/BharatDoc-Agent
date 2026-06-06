@@ -18,19 +18,26 @@ logo = Image.open("logo.png")
 # SIDEBAR
 # ------------------------------
 
-st.sidebar.image(logo, width=180)
-st.sidebar.markdown("## BharatDoc Agent")
-st.sidebar.success("AI Powered Document Intelligence")
+st.sidebar.image(logo, width=140)
 
-st.sidebar.write("""
-✓ OCR Extraction
-✓ Structured Data Extraction
-✓ JSON Export
-✓ Chat With Document
-✓ Multilingual Support
-✓ Analytics Dashboard
-✓ AI Summary
-""")
+st.sidebar.markdown("## BharatDoc Agent")
+
+st.sidebar.success("🚀 AI Powered Document Intelligence")
+
+st.sidebar.markdown("### Features")
+
+features = [
+    "OCR Extraction",
+    "Structured Data Extraction",
+    "JSON Export",
+    "Chat With Document",
+    "Multilingual Support",
+    "Analytics Dashboard",
+    "AI Summary"
+]
+
+for feature in features:
+    st.sidebar.markdown(f"✅ {feature}")
 
 # ------------------------------
 # HEADER
@@ -301,17 +308,17 @@ Health Score: {risk_score}/100
 
     st.subheader("💼 Business Value")
 
-    st.success("""
-✔ Reduces manual verification effort
+    col1, col2 = st.columns(2)
 
-✔ Enables faster citizen services
+    with col1:
+        st.success("✔ Faster Citizen Services")
+        st.success("✔ Reduced Manual Verification")
 
-✔ Supports multilingual governance
+    with col2:
+        st.success("✔ Multilingual Governance")
+        st.success("✔ Better Record Management")
 
-✔ Improves digital record keeping
-
-✔ Suitable for Smart India initiatives
-""")
+    st.info("🇮🇳 Suitable for Smart India Digital Transformation")
 
     final_output = {
         "document_type": document_type,

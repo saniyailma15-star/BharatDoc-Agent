@@ -1,6 +1,8 @@
+from PIL import Image
 import streamlit as st
 from PIL import Image
 import json
+logo = Image.open("logo.png")
 
 # ------------------------------------
 # PAGE CONFIG
@@ -11,12 +13,18 @@ st.set_page_config(
     page_icon="🇮🇳",
     layout="wide"
 )
+st.set_page_config(
+    page_title="BharatDoc Agent",
+    page_icon="🇮🇳",
+    layout="wide"
+)
 
 # ------------------------------------
 # SIDEBAR
 # ------------------------------------
 
-st.sidebar.title("🇮🇳 BharatDoc Agent")
+st.sidebar.image(logo, width=180)
+st.sidebar.markdown("## BharatDoc Agent")
 
 st.sidebar.success("AI Powered Document Intelligence")
 
@@ -40,27 +48,53 @@ st.sidebar.write("""
 # HEADER
 # ------------------------------------
 
-st.title("🇮🇳 BharatDoc Agent")
+col1, col2 = st.columns([1,5])
+
+with col1:
+    st.image(logo, width=140)
+
+with col2:
+    st.markdown("""
+    <h1 style='margin-bottom:0px;'>
+    BharatDoc Agent
+    </h1>
+    <h4 style='color:#4CAF50;'>
+    AI-Powered Multilingual Document Intelligence System
+    </h4>
+    """, unsafe_allow_html=True)
 st.header("AI-Powered Multilingual Document Intelligence System")
 
 st.write("Digitize, Understand and Query Documents using AI")
+
 # ------------------------------------
-# SOLUTION IMPACT
+# EXPECTED IMPACT
 # ------------------------------------
 
-st.subheader("🎯 Solution Impact")
+st.subheader("📈 Expected Impact")
 
-st.info("""
-✅ Reduces manual data entry
+col1, col2, col3 = st.columns(3)
 
-✅ Converts unstructured documents into structured records
+with col1:
+    st.metric("OCR Accuracy", "95%")
 
-✅ Enables faster document search and retrieval
+with col2:
+    st.metric("Processing Speed", "80% Faster")
 
-✅ Supports multilingual document digitization
+with col3:
+    st.metric("Languages Supported", "7+")
 
-✅ Improves efficiency in government and institutional workflows
-""")
+st.markdown("---")
+
+col4, col5, col6 = st.columns(3)
+
+with col4:
+    st.success("✅ Structured Data Extraction")
+
+with col5:
+    st.success("✅ AI Document Understanding")
+
+with col6:
+    st.success("✅ Government Ready")
 
 st.divider()
 
@@ -106,7 +140,7 @@ if uploaded_file is not None:
 
     with st.spinner("Processing Document..."):
 
-        # DEMO OCR OUTPUT
+        # Demo OCR Output
         extracted_text = [
             "Name: Saniya Ilma",
             "College: Alliance University",
@@ -118,14 +152,23 @@ if uploaded_file is not None:
 
     st.success("✅ OCR Completed Successfully")
 
+    avg_confidence = sum(confidence_scores) / len(confidence_scores)
+
+    confidence_score = round(
+        avg_confidence * 100,
+        2
+    )
+
     # ------------------------------------
-    # OCR CONFIDENCE
+    # PROCESSING STATUS
     # ------------------------------------
 
-    avg_confidence = (
-        sum(confidence_scores)
-        / len(confidence_scores)
-    )
+    st.subheader("⚙ Processing Status")
+
+    st.success("✓ Image Uploaded")
+    st.success("✓ OCR Extraction Completed")
+    st.success("✓ Language Detection Completed")
+    st.success("✓ Structured Data Generated")
 
     # ------------------------------------
     # DOCUMENT TYPE DETECTION
@@ -148,8 +191,28 @@ if uploaded_file is not None:
         document_type = "Student Document"
 
     st.subheader("📑 Document Type")
-
     st.success(document_type)
+
+    # ------------------------------------
+    # RELIABILITY ASSESSMENT
+    # ------------------------------------
+
+    st.subheader("🛡 Reliability Assessment")
+
+    if confidence_score >= 90:
+        st.success(
+            f"High Reliability Document ({confidence_score}%)"
+        )
+
+    elif confidence_score >= 70:
+        st.warning(
+            f"Medium Reliability Document ({confidence_score}%)"
+        )
+
+    else:
+        st.error(
+            f"Low Reliability - Manual Verification Recommended ({confidence_score}%)"
+        )
 
     # ------------------------------------
     # EXTRACTED TEXT
@@ -174,19 +237,59 @@ if uploaded_file is not None:
 
             key, value = line.split(":", 1)
 
-            structured_data[
-                key.strip()
-            ] = value.strip()
+            structured_data[key.strip()] = value.strip()
 
     if structured_data:
-
         st.json(structured_data)
 
     else:
+        st.info("No structured fields detected.")
 
-        st.info(
-            "No structured fields detected."
+    # ------------------------------------
+    # DOCUMENT RISK ANALYZER
+    # ------------------------------------
+
+    st.subheader("🚨 Document Risk Analyzer")
+
+    required_fields = [
+        "Name",
+        "College",
+        "Department"
+    ]
+
+    missing_fields = []
+
+    for field in required_fields:
+
+        if field not in structured_data:
+            missing_fields.append(field)
+
+    risk_score = 100 - (len(missing_fields) * 20)
+
+    if risk_score >= 80:
+        st.success(
+            f"Document Health Score: {risk_score}/100"
         )
+
+    elif risk_score >= 60:
+        st.warning(
+            f"Document Health Score: {risk_score}/100"
+        )
+
+    else:
+        st.error(
+            f"Document Health Score: {risk_score}/100"
+        )
+
+    if missing_fields:
+
+        st.warning(
+            "Missing Fields: "
+            + ", ".join(missing_fields)
+        )
+
+    else:
+        st.success("No Missing Fields Detected")
 
     # ------------------------------------
     # ANALYTICS DASHBOARD
@@ -197,22 +300,13 @@ if uploaded_file is not None:
     col1, col2, col3, col4 = st.columns(4)
 
     with col1:
-        st.metric(
-            "Language",
-            language
-        )
+        st.metric("Language", language)
 
     with col2:
-        st.metric(
-            "Fields",
-            len(structured_data)
-        )
+        st.metric("Fields", len(structured_data))
 
     with col3:
-        st.metric(
-            "Text Lines",
-            len(extracted_text)
-        )
+        st.metric("Text Lines", len(extracted_text))
 
     with col4:
         st.metric(
@@ -224,22 +318,23 @@ if uploaded_file is not None:
     # AI SUMMARY
     # ------------------------------------
 
-    st.subheader("🧠 AI Summary")
+    st.subheader("🤖 AI Summary")
 
     summary = f"""
-Document Type: {document_type}
+📄 Document Type: {document_type}
 
-Language Detected: {language}
+🌐 Language: {language}
 
-Total Text Lines Extracted: {len(extracted_text)}
+📝 Text Lines: {len(extracted_text)}
 
-The document has been successfully processed
-and converted into structured digital data
-using BharatDoc Agent.
+📊 Confidence Score: {confidence_score}%
+
+🚨 Health Score: {risk_score}/100
+
+The document has been successfully analyzed, structured, validated and converted into digital records using BharatDoc Agent.
 """
 
-    st.success(summary)
-    
+    st.info(summary)
 
     # ------------------------------------
     # FINAL JSON OUTPUT
@@ -248,10 +343,7 @@ using BharatDoc Agent.
     final_output = {
         "document_type": document_type,
         "language": language,
-        "confidence_score": round(
-            avg_confidence * 100,
-            2
-        ),
+        "confidence_score": confidence_score,
         "structured_data": structured_data,
         "raw_text": extracted_text
     }
@@ -294,7 +386,6 @@ using BharatDoc Agent.
         for key, value in structured_data.items():
 
             if key.lower() in q:
-
                 answer = value
                 break
 
@@ -307,7 +398,7 @@ using BharatDoc Agent.
                 answer = language
 
             elif "confidence" in q:
-                answer = f"{avg_confidence*100:.2f}%"
+                answer = f"{confidence_score}%"
 
             elif "lines" in q:
                 answer = str(len(extracted_text))

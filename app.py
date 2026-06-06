@@ -195,8 +195,6 @@ if uploaded_file is not None:
 
     combined_text = " ".join(extracted_text).lower()
 
-    document_type = "General Document"
-
 if "aadhaar" in combined_text:
     document_type = "Aadhaar Card"
 
@@ -215,8 +213,11 @@ elif "university" in combined_text:
 elif "invoice" in combined_text:
     document_type = "Invoice"
 
-elif "college" in combined_text:
-    document_type = "Student Document"
+else:
+    document_type = "General Document"
+
+    
+
     # ------------------------------------
     # RELIABILITY ASSESSMENT
     # ------------------------------------

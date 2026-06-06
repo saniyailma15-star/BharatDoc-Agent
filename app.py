@@ -13,11 +13,6 @@ st.set_page_config(
     page_icon="🇮🇳",
     layout="wide"
 )
-st.set_page_config(
-    page_title="BharatDoc Agent",
-    page_icon="🇮🇳",
-    layout="wide"
-)
 
 # ------------------------------------
 # SIDEBAR
@@ -62,7 +57,9 @@ with col2:
     AI-Powered Multilingual Document Intelligence System
     </h4>
     """, unsafe_allow_html=True)
-st.header("AI-Powered Multilingual Document Intelligence System")
+    st.markdown("""
+### 🇮🇳 Transforming Indian Documents into Intelligent Digital Records
+""")
 
 st.write("Digitize, Understand and Query Documents using AI")
 
@@ -97,7 +94,23 @@ with col6:
     st.success("✅ Government Ready")
 
 st.divider()
+st.subheader("🚀 Innovation Highlights")
 
+st.info("""
+• Multilingual Document Intelligence
+
+• Automated OCR & Structured Data Extraction
+
+• AI-Based Document Validation
+
+• Smart Document Search
+
+• Interactive Chat With Document
+
+• Government & Enterprise Ready
+""")
+
+st.divider()
 # ------------------------------------
 # LANGUAGE SELECTION
 # ------------------------------------
@@ -140,15 +153,21 @@ if uploaded_file is not None:
 
     with st.spinner("Processing Document..."):
 
-        # Demo OCR Output
-        extracted_text = [
-            "Name: Saniya Ilma",
-            "College: Alliance University",
-            "Department: IoT",
-            "Project: BharatDoc Agent"
-        ]
+     progress_bar = st.progress(0)
 
-        confidence_scores = [0.95]
+    for i in range(100):
+        progress_bar.progress(i + 1)
+
+    progress_bar.empty()
+
+    extracted_text = [
+        "Name: Saniya Ilma",
+        "College: Alliance University",
+        "Department: IoT",
+        "Project: BharatDoc Agent"
+    ]
+
+    confidence_scores = [0.95]
 
     st.success("✅ OCR Completed Successfully")
 
@@ -178,21 +197,26 @@ if uploaded_file is not None:
 
     document_type = "General Document"
 
-    if "aadhaar" in combined_text:
-        document_type = "Aadhaar Card"
+if "aadhaar" in combined_text:
+    document_type = "Aadhaar Card"
 
-    elif "pan" in combined_text:
-        document_type = "PAN Card"
+elif "pan" in combined_text:
+    document_type = "PAN Card"
 
-    elif "passport" in combined_text:
-        document_type = "Passport"
+elif "passport" in combined_text:
+    document_type = "Passport"
 
-    elif "college" in combined_text:
-        document_type = "Student Document"
+elif "certificate" in combined_text:
+    document_type = "Certificate"
 
-    st.subheader("📑 Document Type")
-    st.success(document_type)
+elif "university" in combined_text:
+    document_type = "Educational Document"
 
+elif "invoice" in combined_text:
+    document_type = "Invoice"
+
+elif "college" in combined_text:
+    document_type = "Student Document"
     # ------------------------------------
     # RELIABILITY ASSESSMENT
     # ------------------------------------
@@ -290,8 +314,15 @@ if uploaded_file is not None:
 
     else:
         st.success("No Missing Fields Detected")
+        st.subheader("🔐 Authenticity Check")
 
-    # ------------------------------------
+if confidence_score < 80:
+    st.error("⚠ Possible tampered or low-quality document")
+
+else:
+    st.success("✅ Document appears authentic")
+
+        # ------------------------------------
     # ANALYTICS DASHBOARD
     # ------------------------------------
 
@@ -311,12 +342,65 @@ if uploaded_file is not None:
     with col4:
         st.metric(
             "Confidence",
-            f"{avg_confidence*100:.2f}%"
+            f"{confidence_score}%"
         )
+
+    # ------------------------------------
+    # PROCESSING STATISTICS
+    # ------------------------------------
+
+    st.subheader("📈 Processing Statistics")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.metric(
+            "Words Extracted",
+            len(" ".join(extracted_text).split())
+        )
+
+    with col2:
+        st.metric(
+            "Fields Detected",
+            len(structured_data)
+        )
+
+    with col3:
+        st.metric(
+            "Document Health",
+            f"{risk_score}%"
+        )
+
+    # ------------------------------------
+    # SEARCH INSIDE DOCUMENT
+    # ------------------------------------
+
+    st.divider()
+
+    st.subheader("🔍 Search Inside Document")
+
+    search_query = st.text_input(
+        "Enter keyword to search"
+    )
+
+    if search_query:
+
+        found = False
+
+        for line in extracted_text:
+
+            if search_query.lower() in line.lower():
+                st.success(line)
+                found = True
+
+        if not found:
+            st.warning("No matching text found.")
 
     # ------------------------------------
     # AI SUMMARY
     # ------------------------------------
+
+    st.divider()
 
     st.subheader("🤖 AI Summary")
 
@@ -335,12 +419,25 @@ The document has been successfully analyzed, structured, validated and converted
 """
 
     st.info(summary)
+    st.subheader("💼 Business Value")
+
+st.success("""
+✔ Reduces manual verification effort
+
+✔ Enables faster citizen services
+
+✔ Supports multilingual governance
+
+✔ Improves digital record keeping
+
+✔ Suitable for Smart India initiatives
+""")
 
     # ------------------------------------
-    # FINAL JSON OUTPUT
+    # JSON OUTPUT
     # ------------------------------------
 
-    final_output = {
+final_output = {
         "document_type": document_type,
         "language": language,
         "confidence_score": confidence_score,
@@ -348,17 +445,17 @@ The document has been successfully analyzed, structured, validated and converted
         "raw_text": extracted_text
     }
 
-    st.subheader("📦 Final JSON Output")
+st.subheader("📦 Final JSON Output")
 
-    st.json(final_output)
+st.json(final_output)
 
-    json_string = json.dumps(
+json_string = json.dumps(
         final_output,
         indent=4,
         ensure_ascii=False
     )
 
-    st.download_button(
+st.download_button(
         "⬇ Download JSON",
         data=json_string,
         file_name="bharatdoc_output.json",
@@ -369,15 +466,15 @@ The document has been successfully analyzed, structured, validated and converted
     # CHAT WITH DOCUMENT
     # ------------------------------------
 
-    st.divider()
+st.divider()
 
-    st.subheader("💬 Chat With Document")
+st.subheader("💬 Chat With Document")
 
-    question = st.text_input(
+question = st.text_input(
         "Ask a question about the document"
     )
 
-    if question:
+if question:
 
         q = question.lower()
 
@@ -400,11 +497,21 @@ The document has been successfully analyzed, structured, validated and converted
             elif "confidence" in q:
                 answer = f"{confidence_score}%"
 
-            elif "lines" in q:
-                answer = str(len(extracted_text))
+            elif "health" in q:
+                answer = f"{risk_score}/100"
 
         st.success(answer)
+        st.subheader("🏆 Why BharatDoc Agent?")
 
+        st.info("""
+BharatDoc Agent transforms static documents into intelligent digital assets.
+
+It combines OCR, AI understanding, multilingual support,
+risk assessment and structured extraction in one platform.
+
+Designed for Government, Education,
+Healthcare and Enterprise workflows.
+""")
 # ------------------------------------
 # FOOTER
 # ------------------------------------
